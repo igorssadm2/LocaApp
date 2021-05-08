@@ -3,3 +3,17 @@
 ################################################################################
 
 /LocaApp.Core.Test/bin/Debug/net5.0
+/.vs/LocaApp/DesignTimeBuild
+/.vs/LocaApp/v16
+/LocaApp.Core.Test/obj
+/src/building blocks/LocaApp.Core/bin/Debug
+/src/building blocks/LocaApp.Core/obj
+/src/services/LocaApp.Identidade.API/bin/Debug
+/src/services/LocaApp.Identidade.API/Migrations
+/src/services/LocaApp.Identidade.API/obj
+/src/services/LocaApp.Locacao.API/bin/Debug/net5.0
+/src/services/LocaApp.Locacao.API/obj
+/src/services/LocaApp.Veiculos.API/bin/Debug
+/src/services/LocaApp.Veiculos.API/obj
+/src/web/LocaApp.UI.MVC/bin/Debug
+/src/web/LocaApp.UI.MVC/obj
