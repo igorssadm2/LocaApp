@@ -1,4 +1,5 @@
 ﻿
+using LocaApp.FrameWork.DomainObjects;
 using LocaApp.FrameWork.Uteis;
 using Xunit;
 

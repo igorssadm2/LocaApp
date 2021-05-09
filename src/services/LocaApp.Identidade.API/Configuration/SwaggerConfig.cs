@@ -2,9 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LocaApp.Identidade.API.Configuration
 {
@@ -49,8 +46,8 @@ namespace LocaApp.Identidade.API.Configuration
                     }
                 });
 
+                #endregion
             }); 
-            #endregion
 
             return services;
         }
@@ -61,6 +58,7 @@ namespace LocaApp.Identidade.API.Configuration
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                c.RoutePrefix = string.Empty;
             });
 
             return app;

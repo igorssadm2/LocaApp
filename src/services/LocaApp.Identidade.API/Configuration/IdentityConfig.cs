@@ -1,0 +1,29 @@
+﻿
+
+using LocaApp.Identidade.API.Data;
+using LocaApp.Identidade.API.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace LocaApp.Identidade.API.Configuration
+{
+    public static class IdentityConfig
+    {
+        public static IServiceCollection AddIdentityConfiguration(this IServiceCollection services,
+            IConfiguration configuration)
+        {
+
+            services.AddDbContext<ApplicationDbContext>(optionsAction: options =>
+            options.UseSqlite(configuration.GetConnectionString("SqLite")));
+
+            services.AddDefaultIdentity<LocaAppUserModel>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            return services;
+        }
+    }
+}
