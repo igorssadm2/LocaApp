@@ -9,6 +9,6 @@ namespace LocaApp.Identidade.API.Models.Enum
     {
         GENERICO,
         CLIENTE,
-        MOTORISTA
+        OPERADOR
     }
 }

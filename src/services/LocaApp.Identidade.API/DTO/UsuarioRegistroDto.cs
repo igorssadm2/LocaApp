@@ -1,4 +1,5 @@
 ﻿using LocaApp.FrameWork.Uteis;
+using LocaApp.Identidade.API.Models.Enum;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -34,5 +35,12 @@ namespace LocaApp.Identidade.API.DTO
 
         [Compare("Senha", ErrorMessage = "As senhas não conferem.")]
         public string SenhaConfirmacao { get; set; }
+
+        public TipoUsuario TipoUsuario { get; set; }
+
+        public string Matricula { get; set; }
+
     }
+
+
 }

@@ -16,10 +16,21 @@ namespace LocaApp.Identidade.API.Configuration
         {
             services.AddControllers();
 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .SetIsOriginAllowed(origin => true)
+                        .AllowCredentials();
+                });
+            });
+                
             services.AddScoped<IAuthenticantionService,AuthenticationService>();
             services.AddScoped<IAspNetUser, AspNetUser>();
             services.AddScoped<INotificador, Notificador>();
-            
+            services.AddScoped<IJWTService, JWTService>();
             return services;
         }
 
@@ -30,8 +41,9 @@ namespace LocaApp.Identidade.API.Configuration
 
             app.UseRouting();
 
-            app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

@@ -16,31 +16,58 @@ namespace LocaApp.Identidade.API.Service
     public class AuthenticationService : BaseService, IAuthenticantionService
     {
         private readonly UserManager<LocaAppUserModel> _userManager;
+        private readonly SignInManager<LocaAppUserModel> _signInManager;
         private readonly ApplicationDbContext _context;
-
+        private readonly IJWTService _JWTService;
 
 
         public AuthenticationService(UserManager<LocaAppUserModel> userManager,
+            SignInManager<LocaAppUserModel> signInManager,
+            IJWTService jWTService,
             ApplicationDbContext context, INotificador notificador) : base(notificador)
         {
+            _signInManager = signInManager;
             _userManager = userManager;
+            _JWTService = jWTService;
             _context = context;
         }
 
-        public async Task<bool> EmailExiste(UsuarioRegistroDto usuarioRegistroDto)
+        private async Task<bool> EmailExiste(string Email)
         {
-            var usuarioExiste = await _userManager.FindByEmailAsync(usuarioRegistroDto.Email);
-
+            var usuarioExiste = await _userManager.FindByEmailAsync(Email);
+            
             return usuarioExiste != null ? true : false;
         }
 
+        public async Task<UsuarioJwtDto> GerarJwt(UsuarioLoginDto usuarioLoginDto)
+        {
+            if (await EmailExiste(usuarioLoginDto.Email))
+            {
 
+            }
+            var result = await _signInManager.PasswordSignInAsync(usuarioLoginDto.Email, usuarioLoginDto.Senha,
+                false, true);
+
+            if (result.Succeeded)
+            {
+                return await _JWTService.GerarJwt(usuarioLoginDto.Email);
+            }
+
+            if (result.IsLockedOut)
+            {
+                Notificar("Usuário temporariamente bloqueado por tentativas inválidas");
+                return null;
+            }
+
+            Notificar("Usuário e/ou senha incorretos");
+            return null;
+        }
         public async Task<string> RegistroCliente(UsuarioRegistroDto usuarioRegistroDto)
         {
             try
             {
 
-                if (await EmailExiste(usuarioRegistroDto))
+                if (await EmailExiste(usuarioRegistroDto.Email))
                 {
                     Notificar("Email já cadastrado");
                     return string.Empty;
@@ -76,12 +103,16 @@ namespace LocaApp.Identidade.API.Service
         {
             try
             {
+                if (string.IsNullOrEmpty(usuarioRegistroDto.Matricula))
+                {
+                    Notificar("Campo matrícula é obrigatorio para cadastro de operador");
+                    return string.Empty;
+                }
 
-                if (await EmailExiste(usuarioRegistroDto))
+                if (await EmailExiste(usuarioRegistroDto.Email))
                 {
                     Notificar("Email já cadastrado");
                     return string.Empty;
-
                 }
 
                 var user = new LocaAppUserModel
@@ -89,7 +120,7 @@ namespace LocaApp.Identidade.API.Service
                     UserName = usuarioRegistroDto.Email,
                     Email = usuarioRegistroDto.Email,
                     EmailConfirmed = true,
-                    Tipo = TipoUsuario.GENERICO
+                    Tipo = TipoUsuario.OPERADOR
                 };
 
                 var result = await _userManager.CreateAsync(user, usuarioRegistroDto.Senha);

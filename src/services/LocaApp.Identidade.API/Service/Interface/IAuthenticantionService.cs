@@ -11,9 +11,7 @@ namespace LocaApp.Identidade.API.Service.Interface
     {
         Task<string> RegistroCliente(UsuarioRegistroDto usuarioRegistroDto);
         Task<string> RegistroOperador(UsuarioRegistroDto usuarioRegistroDto);
-
-        Task<bool> EmailExiste(UsuarioRegistroDto usuarioRegistroDto);
-
+        Task<UsuarioJwtDto> GerarJwt(UsuarioLoginDto usuarioLoginDto);
 
     }
 }
